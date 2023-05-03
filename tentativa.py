@@ -57,7 +57,7 @@ clock = pygame.time.Clock()
 # IMAGENS
 background_position = [0, 0]
 background_image = pygame.image.load("texturas/fundo.jpg").convert() # Imagens colocadas na pasta texturas/
-player_image = pygame.image.load("texturas/wizard.png").convert()
+player_image = pygame.image.load("texturas/wizard.png").convert() #Isso ajuda na organização
 book_image = pygame.image.load("texturas/livro.png").convert()
 player_image.set_colorkey(WHITE)
 book_image.set_colorkey(BLACK)
