@@ -3,7 +3,6 @@ import random
 import time
 import mysql.connector
 
-buce3ta
 
 # conecta ao banco de dados ""aqui tem q os dados do banco de dados da maquina de vcs ou a q vai ser host do jogo""
 dbperguntas = mysql.connector.connect(
