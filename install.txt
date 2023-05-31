@@ -1,2 +1,4 @@
+Rodar no terminal vscode esses comandos ! ! !
+
 pip install pygame
 pip install mysql.connector
