@@ -114,7 +114,7 @@ TAMANHO = [LARGURA, ALTURA]
 TELA = pygame.display.set_mode(TAMANHO)
 question_surface = pygame.Surface((1050, 300))  # cria uma nova surface para a tela de pergunta
 question_surface.fill((255, 255, 255))
-cont = 0
+cont_vida = 0
 acertos = 0
 resposta = 0
 erros = acertos -1
@@ -273,25 +273,31 @@ while not done:
     if resposta == alternativa and resposta != 0 and colisao == True:
         acertos += 1
         resposta = 0
-        cont += 1
+        cont_vida += 1
         print(acertos)
         print("Player acertou.")
         
     if resposta is not None and resposta != alternativa and resposta != 0:
         resposta = 0
-        cont += 1
         vidas -= 1
         print(acertos)
         print("Player errou")
 
-    if 2 > acertos >= 1:
+    if 7 > acertos >= 3:
         player.mudar_imagem('SpritePescador.png')
-    elif 3 > acertos >= 2:
+    elif 10 > acertos >= 6:
         player.mudar_imagem('SpriteFerreiro.png')
-    elif acertos >= 3:
+    elif 13 > acertos >= 9:
         player.mudar_imagem('SpriteCavaleiro.png')
+    elif acertos >= 12:
+        player.mudar_imagem('SpriteMago.png')
     if vidas == -1:
         pygame.quit()
+
+    if cont_vida % 3 == 0 and vidas != 3:
+        vidas += 1
+        cont_vida = 0
+        
 
     # CHECA COLISÕES----------------------------------------------------------------------
     for block in blocks_hit_list:

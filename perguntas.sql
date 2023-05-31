@@ -34,7 +34,7 @@ INSERT INTO perguntas (pergunta, alt1, alt2, alt3, alt4, resposta, materia) VALU
 	('Dado utilizado para representar uma sequência imutável de elementos em Python? ', '1 - list', '2 - dictionary', '3 - set', '4 - tuple', '4', 'python'),
 	('Qual o método utilizado para obter o valor absoluto de um número em Python? ', '1 - round()', '2 - abs() ', '3 - sqrt()', '4 - pow()', '2', 'python'),
 	('Em Python, qual a função utilizada para encontrar o valor máximo em uma lista? ', '1 - min()', '2 - sort()', '3 - sum()', '4 - max()', '4', 'python'),
-	('Qual a estrutura de controle para executar um bloco de código caso uma condição seja verdadeira e outro bloco caso seja falsa em Python?', '1 - if-else statement', '2 - while loop', '3 - for loop', '4 - switch case', '1', 'python'),
+	('A estrutura de controle para executar um bloco de código caso uma condição seja verdadeira e outroa seja falsa em Python?', '1 - if-else statement', '2 - while loop', '3 - for loop', '4 - switch case', '1', 'python'),
 	('Em Python, qual o método utilizado para converter um número em uma string? ', '1 - int()', '2 - str()', '3 - float()', '4 - convert()', '2', 'python'),
 	('Qual é o operador utilizado para realizar a concatenação de strings em Python?', '1 - /', '2 - -', '3 - +', '4 - *', '3', 'python'),
 	('Modificador de acesso para tornar um atributo ou método visível apenas dentro da mesma classe em Java: ', '1 - private', '2 - protected', '3 - public', '4 - default', '1', 'java'),
