@@ -138,7 +138,7 @@ clock = pygame.time.Clock()
 # IMAGENS
 background_position = [0, 0]
 background_image = pygame.image.load("fundo.png").convert()
-player_image = pygame.image.load("SpriteFazendeiro.png").convert_alpha()
+player_image = pygame.image.load("priteFazendeiro.png").convert_alpha()
 book_image = pygame.image.load("livro.png").convert()
 obst_image = pygame.image.load("Bigorna.png").convert()
 book_image.set_colorkey(BLACK)

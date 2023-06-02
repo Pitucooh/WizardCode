@@ -62,7 +62,7 @@ def abrir_tela_cadastro():
             #insere dados na tabela
             c.execute("INSERT INTO cadastro VALUES (?, ?, ?)", (nome, email, senha))
             label_status.configure(text="Cadastro realizado com sucesso!", fg="green")
-            os.system('WizardCode.py')
+            os.system('WizardCode\WizardCodeJogo.py')
 
         conn.commit()
         conn.close()
