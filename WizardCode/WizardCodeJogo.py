@@ -2,7 +2,10 @@ import pygame
 import random
 import time
 import mysql.connector
+import os
 
+#especifica a pasta WizardCode como a pasta atual
+os.chdir(r".\WizardCode")
 
 # conecta ao banco de dados ""aqui tem q os dados do banco de dados da maquina de vcs ou a q vai ser host do jogo""
 dbperguntas = mysql.connector.connect(
@@ -138,7 +141,7 @@ clock = pygame.time.Clock()
 # IMAGENS
 background_position = [0, 0]
 background_image = pygame.image.load("fundo.png").convert()
-player_image = pygame.image.load("priteFazendeiro.png").convert_alpha()
+player_image = pygame.image.load("spriteFazendeiro.png").convert_alpha()
 book_image = pygame.image.load("livro.png").convert()
 obst_image = pygame.image.load("Bigorna.png").convert()
 book_image.set_colorkey(BLACK)
