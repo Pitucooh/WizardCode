@@ -87,8 +87,8 @@ class Player(pygame.sprite.Sprite):
 
     def atualizar_informacoes(self):
         # Renderize o texto para cada informação
-        texto_vidas = fontesys.render("Vidas: " + str(vidas), True, (255, 255, 255))  # Preto
-        texto_acertos = fontesys.render("Acertos: " + str(acertos), True, (255, 255, 255))
+        texto_vidas = fonte.render("Vidas: " + str(vidas), True, (255, 255, 255))  # Preto
+        texto_acertos = fonte.render("Acertos: " + str(acertos), True, (255, 255, 255))
         # Posicione os textos na tela
         TELA.blit(texto_vidas, (10, 50))
         TELA.blit(texto_acertos, (10, 10))
@@ -114,7 +114,7 @@ ALTURA = 900
 TAMANHO = [LARGURA, ALTURA]
 TELA = pygame.display.set_mode(TAMANHO)
 question_surface = pygame.Surface((1050, 300))  # cria uma nova surface para a tela de pergunta
-question_surface.fill((255, 255, 255))
+question_image = pygame.image.load("FundoPergunta.png").convert()
 cont_vida = 0
 acertos = 0
 resposta = 0
@@ -251,8 +251,8 @@ while not done:
      # PERGUNTAS ----------------------------------------------------------------------------------
     pygame.font.init()
     txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoria()
-    fonte = pygame.font.get_default_font()                     # carrega com a fonte padrão
-    fontesys = pygame.font.SysFont(fonte, 29)                  # usa a fonte padrão
+    fonte = pygame.font.Font("Quicksand-Bold.ttf", 18)  
+    fontemat = pygame.font.Font("Quicksand-Bold.ttf", 25)                    # carrega com a fonte padrão
     player.atualizar_informacoes()
     colicao = False
 
@@ -262,11 +262,12 @@ while not done:
     if len(blocks_hit_list) > 0 and not tela_pergunta:
         txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoria()
         alternativa = resp
-        txttela = fontesys.render(txt, 1, BLACK)
-        alt1tela = fontesys.render(alt1, 1, BLACK)
-        alt2tela = fontesys.render(alt2, 1, BLACK)
-        alt3tela = fontesys.render(alt3, 1, BLACK)
-        alt4tela = fontesys.render(alt4, 1, BLACK)
+        materiatela = fontemat.render(materia, 1, WHITE)
+        txttela = fonte.render(txt, 1, WHITE)
+        alt1tela = fonte.render(alt1, 1, WHITE)
+        alt2tela = fonte.render(alt2, 1, WHITE)
+        alt3tela = fonte.render(alt3, 1, WHITE)
+        alt4tela = fonte.render(alt4, 1, WHITE)
         colisao = True
         print(txt, alt1, alt2, alt3, alt4, resp, materia)
         print("A resposta correta é: ", alternativa)
@@ -295,7 +296,7 @@ while not done:
     if vidas == -1:
         pygame.quit()
 
-    if cont_vida % 3 == 0 and vidas != 3:
+    if cont_vida % 3 == 0 and cont_vida != 0 and vidas != 3:
         vidas += 1
         cont_vida = 0
         
@@ -317,11 +318,13 @@ while not done:
 
     if tela_pergunta:
         TELA.blit(question_surface, (80, 250))
-        TELA.blit(txttela, (100, 270))
-        TELA.blit(alt1tela, (100, 310))
-        TELA.blit(alt2tela, (100, 350))
-        TELA.blit(alt3tela, (100, 390))
-        TELA.blit(alt4tela, (100, 430))
+        question_surface.blit(question_image, (0, 0))
+        TELA.blit(materiatela, (130, 270))
+        TELA.blit(txttela, (130, 330))
+        TELA.blit(alt1tela, (140, 370))
+        TELA.blit(alt2tela, (140, 410))
+        TELA.blit(alt3tela, (140, 450))
+        TELA.blit(alt4tela, (140, 490))
         pause = True
 
     # ATUALIZA A TELA
