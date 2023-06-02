@@ -8,7 +8,7 @@ import mysql.connector
 dbperguntas = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Mamacosma2!",
+    password="root",
     database="jogo")
 
 # define o cursor
