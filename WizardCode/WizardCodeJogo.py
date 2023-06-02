@@ -38,7 +38,6 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
-
 # RECT = RETANGULO = HITBOX RETANGULAR
 class Livros(pygame.sprite.Sprite):
     def __init__(self): # ATRIBUTOS
@@ -71,7 +70,6 @@ class Obstaculo(pygame.sprite.Sprite):
         if self.rect.y > 650:
             self.reset_pos()
 
-
 class Player(pygame.sprite.Sprite):
     def __init__(self): # ATRIBUTOS
         super().__init__()
@@ -92,9 +90,12 @@ class Player(pygame.sprite.Sprite):
         # Renderize o texto para cada informação
         texto_vidas = fonte.render("Vidas: " + str(vidas), True, (255, 255, 255))  # Preto
         texto_acertos = fonte.render("Acertos: " + str(acertos), True, (255, 255, 255))
+        texto_cronometro = fonte.render(f"Tempo: {cronometro}", True, (255, 255, 255))
         # Posicione os textos na tela
-        TELA.blit(texto_vidas, (10, 50))
         TELA.blit(texto_acertos, (10, 10))
+        TELA.blit(texto_vidas, (10, 50))
+        TELA.blit(texto_cronometro, (10, 90))
+        
 
 #CRONOMETRO PARA REGISTRAR O TEMPO EM QUE A PESSOA COMPLETA O JOGO
 class Timer:
@@ -123,6 +124,12 @@ acertos = 0
 resposta = 0
 erros = acertos -1
 vidas = 3
+
+#CRONOMETRO
+tempo_jogo = 180
+cronometro = tempo_jogo
+pygame.time.set_timer(pygame.USEREVENT, 180)
+
 # TRANSFORMA AMBAS LISTAS EM SPRITES
 # SPRITES(LIVROS)
 block_list = pygame.sprite.Group()
@@ -237,6 +244,10 @@ while not done:
         # ANDAR
         x_coord = x_coord + x_speed
         y_coord = y_coord + y_speed
+
+        #loop cronometro (ta meio bugado ainda)
+        if event.type == pygame.USEREVENT:
+            cronometro -= 1
 
     # COPIA A IMAGEM NA TELA--------------------------------------------------------------------------------
     TELA.fill(WHITE)
