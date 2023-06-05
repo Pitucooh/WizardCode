@@ -1,5 +1,6 @@
 import pygame
 import random
+import datetime
 import mysql.connector
 import os
 
@@ -112,12 +113,16 @@ class Player(pygame.sprite.Sprite):
         self.image.fill((0, 0, 0))  # REMOVE A PRIMEIRA SKIN
         player_image.set_colorkey(BLACK)
         self.image = pygame.image.load(nova_imagem).convert_alpha()
-
+    
+    def converterTempo(segundos):
+        tempo = str(datetime.timdelta(seconds=segundos))
+        return tempo
+    
     def atualizar_informacoes(self):
         # Renderize o texto para cada informação
         texto_vidas = fonte.render("Vidas: " + str(vidas), True, (255, 255, 255))  # Preto
         texto_acertos = fonte.render("Acertos: " + str(acertos), True, (255, 255, 255))
-        texto_cronometro = fonte.render(f"Tempo: {cronometro * -1/100}", True, (255, 255, 255))
+        texto_cronometro = fonte.render(f"Tempo: {datetime.timedelta(seconds=cronometro *-1)}", True, (255, 255, 255))
         # Posicione os textos na tela
         TELA.blit(texto_acertos, (10, 10))
         TELA.blit(texto_vidas, (10, 50))
