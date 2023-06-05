@@ -1,6 +1,5 @@
 import pygame
 import random
-import time
 import mysql.connector
 import os
 
