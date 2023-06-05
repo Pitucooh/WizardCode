@@ -11,16 +11,44 @@ os.chdir(r".\WizardCode")
 dbperguntas = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="root",
+    password="Mamacosma2!",
     database="jogo")
 
 # define o cursor
 cursor = dbperguntas.cursor()
 
 # função que pega um valor aleatorio de cada linha e coloca em uma variavel
-def perguntaAleatoria():
-    cursor.execute("SELECT * FROM perguntas ORDER BY RAND() LIMIT 1")
-    linha = cursor.fetchone()
+
+def perguntaAleatoriaSQL():
+    cursor.execute("SELECT * FROM perguntas WHERE materia = 'Banco de Dados (SQL)' ORDER BY RAND() LIMIT 1")
+    linhas = cursor.fetchall()
+    linha = random.choice(linhas)
+    txt = linha[0]
+    alt1 = linha[1]
+    alt2 = linha[2]
+    alt3 = linha[3]
+    alt4 = linha[4]
+    resp = linha[5]
+    materia = linha[6]
+    return txt, alt1, alt2, alt3, alt4, resp, materia
+
+def perguntaAleatoriaPython():
+    cursor.execute("SELECT * FROM perguntas WHERE materia = 'Python' ORDER BY RAND() LIMIT 1")
+    linhas = cursor.fetchall()
+    linha = random.choice(linhas)
+    txt = linha[0]
+    alt1 = linha[1]
+    alt2 = linha[2]
+    alt3 = linha[3]
+    alt4 = linha[4]
+    resp = linha[5]
+    materia = linha[6]
+    return txt, alt1, alt2, alt3, alt4, resp, materia
+
+def perguntaAleatoriaJava():
+    cursor.execute("SELECT * FROM perguntas WHERE materia = 'Java' ORDER BY RAND() LIMIT 1")
+    linhas = cursor.fetchall()
+    linha = random.choice(linhas)
     txt = linha[0]
     alt1 = linha[1]
     alt2 = linha[2]
@@ -40,9 +68,9 @@ RED = (255, 0, 0)
 
 # RECT = RETANGULO = HITBOX RETANGULAR
 class Livros(pygame.sprite.Sprite):
-    def __init__(self): # ATRIBUTOS
+    def __init__(self, imagem): # ATRIBUTOS
         super().__init__()
-        self.image = book_image
+        self.image = imagem
         self.rect = self.image.get_rect()
 
     def reset_pos(self): # MÉTODO
@@ -90,27 +118,12 @@ class Player(pygame.sprite.Sprite):
         # Renderize o texto para cada informação
         texto_vidas = fonte.render("Vidas: " + str(vidas), True, (255, 255, 255))  # Preto
         texto_acertos = fonte.render("Acertos: " + str(acertos), True, (255, 255, 255))
-        texto_cronometro = fonte.render(f"Tempo: {cronometro}", True, (255, 255, 255))
+        texto_cronometro = fonte.render(f"Tempo: {cronometro * -1/100}", True, (255, 255, 255))
         # Posicione os textos na tela
         TELA.blit(texto_acertos, (10, 10))
         TELA.blit(texto_vidas, (10, 50))
         TELA.blit(texto_cronometro, (10, 90))
         
-
-#CRONOMETRO PARA REGISTRAR O TEMPO EM QUE A PESSOA COMPLETA O JOGO
-class Timer:
-    def __init__(self):
-        self.start = time.time()
-    
-    def get(self) -> float:
-        return time.time() - self.start
-    
-    def start(self, args):
-        self.timer = Timer()
-
-    def update(self):
-        print(self.timer.get())
-
 # INICIO DO JOGO--------------------------------------------------------------------------------------------
 pygame.init()
 LARGURA = 1200
@@ -126,13 +139,16 @@ erros = acertos -1
 vidas = 3
 
 #CRONOMETRO
-tempo_jogo = 180
+tempo_jogo = 0 # a partir de que numero o "timer" começa a contar
 cronometro = tempo_jogo
-pygame.time.set_timer(pygame.USEREVENT, 180)
+pygame.time.set_timer(pygame.USEREVENT, 1000) # em milissegundos 
 
 # TRANSFORMA AMBAS LISTAS EM SPRITES
 # SPRITES(LIVROS)
-block_list = pygame.sprite.Group()
+sql_list = pygame.sprite.Group()
+py_list = pygame.sprite.Group()
+java_list = pygame.sprite.Group()
+
 
 # SPRITES(OBSTÁCULOS)
 obst_list = pygame.sprite.Group()
@@ -149,9 +165,13 @@ clock = pygame.time.Clock()
 background_position = [0, 0]
 background_image = pygame.image.load("fundo.png").convert()
 player_image = pygame.image.load("spriteFazendeiro.png").convert_alpha()
-book_image = pygame.image.load("livro.png").convert()
+book_imageSQL = pygame.image.load("LivroSql.png").convert()
+book_imageJava = pygame.image.load("LivroJava.png").convert()
+book_imagePy = pygame.image.load("LivroPython.png").convert()
 obst_image = pygame.image.load("Bigorna.png").convert()
-book_image.set_colorkey(BLACK)
+book_imageSQL.set_colorkey(BLACK)
+book_imagePy.set_colorkey(BLACK)
+book_imageJava.set_colorkey(BLACK)
 obst_image.set_colorkey(BLACK)
 # icon_image = pygame.image.load('images/icon.png')
 # pygame.display.set_icon(icon_image)
@@ -169,8 +189,8 @@ player = Player()
 all_sprites_list.add(player)
 
 # OBJETO LIVRO------------------------------------------------------------------------------------------------
-for i in range(3):
-    livro = Livros()
+for i in range(1):
+    livro = Livros(book_imageSQL)
 
     # LOCALIZAÇÃO RANDOMICA P OBJETO
     livro.rect.x = random.randrange(LARGURA)
@@ -178,7 +198,33 @@ for i in range(3):
    
 
     # ADICIONA O OBJETO NA LISTA DE SPRITES
-    block_list.add(livro)
+    sql_list.add(livro)
+
+    all_sprites_list.add(livro)
+
+for i in range(1):
+    livro = Livros(book_imagePy)
+
+    # LOCALIZAÇÃO RANDOMICA P OBJETO
+    livro.rect.x = random.randrange(LARGURA)
+    livro.rect.y = random.randrange(-300, -20)
+   
+
+    # ADICIONA O OBJETO NA LISTA DE SPRITES
+    py_list.add(livro)
+
+    all_sprites_list.add(livro)
+
+for i in range(1):
+    livro = Livros(book_imageJava)
+
+    # LOCALIZAÇÃO RANDOMICA P OBJETO
+    livro.rect.x = random.randrange(LARGURA)
+    livro.rect.y = random.randrange(-300, -20)
+   
+
+    # ADICIONA O OBJETO NA LISTA DE SPRITES
+    java_list.add(livro)
 
     all_sprites_list.add(livro)
 
@@ -259,34 +305,19 @@ while not done:
         all_sprites_list.update()
 
     # VERIFICA SE O JOGADOR COLIDIU COM ALGO-------------------------------------------------------
-    blocks_hit_list = pygame.sprite.spritecollide(player, block_list, False)
+    sql_hit_list = pygame.sprite.spritecollide(player, sql_list, False)
+    py_hit_list = pygame.sprite.spritecollide(player, py_list, False)
+    java_hit_list = pygame.sprite.spritecollide(player, java_list, False)
     obst_hit_list = pygame.sprite.spritecollide(player, obst_list, False)
 
      # PERGUNTAS ----------------------------------------------------------------------------------
     pygame.font.init()
-    txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoria()
+    txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoriaSQL()
     fonte = pygame.font.Font("Quicksand-Bold.ttf", 18)  
     fontemat = pygame.font.Font("Quicksand-Bold.ttf", 25)                    # carrega com a fonte padrão
     player.atualizar_informacoes()
-    colicao = False
 
-
-
-    # se o jogador colidir com um livro, gerar uma pergunta
-    if len(blocks_hit_list) > 0 and not tela_pergunta:
-        txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoria()
-        alternativa = resp
-        materiatela = fontemat.render(materia, 1, WHITE)
-        txttela = fonte.render(txt, 1, WHITE)
-        alt1tela = fonte.render(alt1, 1, WHITE)
-        alt2tela = fonte.render(alt2, 1, WHITE)
-        alt3tela = fonte.render(alt3, 1, WHITE)
-        alt4tela = fonte.render(alt4, 1, WHITE)
-        colisao = True
-        print(txt, alt1, alt2, alt3, alt4, resp, materia)
-        print("A resposta correta é: ", alternativa)
-
-    if resposta == alternativa and resposta != 0 and colisao == True:
+    if resposta == alternativa and resposta != 0:
         acertos += 1
         resposta = 0
         cont_vida += 1
@@ -316,12 +347,58 @@ while not done:
         
 
     # CHECA COLISÕES----------------------------------------------------------------------
-    for block in blocks_hit_list:
+    for block in sql_hit_list:
         # ABRE PERGUNTA NA TELA
+        txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoriaSQL()
+        alternativa = resp
+        materiatela = fontemat.render(materia, 1, WHITE)
+        txttela = fonte.render(txt, 1, WHITE)
+        alt1tela = fonte.render(alt1, 1, WHITE)
+        alt2tela = fonte.render(alt2, 1, WHITE)
+        alt3tela = fonte.render(alt3, 1, WHITE)
+        alt4tela = fonte.render(alt4, 1, WHITE)
+        print(txt, alt1, alt2, alt3, alt4, resp, materia)
+        print("A resposta correta é: ", alternativa)
         tela_pergunta = True
         # RESETA PARA O INICIO DA TELA
         block.reset_pos()
     all_sprites_list.draw(TELA)
+
+    for block in py_hit_list:
+        # ABRE PERGUNTA NA TELA
+        txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoriaPython()
+        alternativa = resp
+        materiatela = fontemat.render(materia, 1, WHITE)
+        txttela = fonte.render(txt, 1, WHITE)
+        alt1tela = fonte.render(alt1, 1, WHITE)
+        alt2tela = fonte.render(alt2, 1, WHITE)
+        alt3tela = fonte.render(alt3, 1, WHITE)
+        alt4tela = fonte.render(alt4, 1, WHITE)
+        print(txt, alt1, alt2, alt3, alt4, resp, materia)
+        print("A resposta correta é: ", alternativa)
+        tela_pergunta = True
+        # RESETA PARA O INICIO DA TELA
+        block.reset_pos()
+
+    all_sprites_list.draw(TELA)
+
+    for block in java_hit_list:
+        # ABRE PERGUNTA NA TELA
+        txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoriaJava()
+        alternativa = resp
+        materiatela = fontemat.render(materia, 1, WHITE)
+        txttela = fonte.render(txt, 1, WHITE)
+        alt1tela = fonte.render(alt1, 1, WHITE)
+        alt2tela = fonte.render(alt2, 1, WHITE)
+        alt3tela = fonte.render(alt3, 1, WHITE)
+        alt4tela = fonte.render(alt4, 1, WHITE)
+        print(txt, alt1, alt2, alt3, alt4, resp, materia)
+        print("A resposta correta é: ", alternativa)
+        tela_pergunta = True
+        # RESETA PARA O INICIO DA TELA
+        block.reset_pos()
+    all_sprites_list.draw(TELA)
+
 
     for block in obst_hit_list:
         # ABRE PERGUNTA NA TELA
