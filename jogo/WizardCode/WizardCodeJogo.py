@@ -5,9 +5,9 @@ import mysql.connector
 import os
 
 #especifica a pasta WizardCode como a pasta atual
-os.chdir(r".\WizardCode")
+os.chdir(r".\jogo\WizardCode")
 
-# conecta ao banco de dados ""aqui tem q os dados do banco de dados da maquina de vcs ou a q vai ser host do jogo""
+# conecta ao banco de dados 
 dbperguntas = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -119,11 +119,11 @@ class Player(pygame.sprite.Sprite):
         return tempo
     
     def atualizar_informacoes(self):
-        # Renderize o texto para cada informação
+        # Renderiza o texto para cada informação
         texto_vidas = fonte.render("Vidas: " + str(vidas), True, (255, 255, 255))  # Preto
         texto_acertos = fonte.render("Acertos: " + str(acertos), True, (255, 255, 255))
         texto_cronometro = fonte.render(f"Tempo: {datetime.timedelta(seconds=cronometro *-1)}", True, (255, 255, 255))
-        # Posicione os textos na tela
+        # Posiciona os textos na tela
         TELA.blit(texto_acertos, (10, 10))
         TELA.blit(texto_vidas, (10, 50))
         TELA.blit(texto_cronometro, (10, 90))
@@ -177,9 +177,6 @@ book_imageSQL.set_colorkey(BLACK)
 book_imagePy.set_colorkey(BLACK)
 book_imageJava.set_colorkey(BLACK)
 obst_image.set_colorkey(BLACK)
-# icon_image = pygame.image.load('images/icon.png')
-# pygame.display.set_icon(icon_image)
-
 
 # VELOCIDADE POR FRAME (ANDAR)
 x_speed = 0
@@ -295,7 +292,7 @@ while not done:
         x_coord = x_coord + x_speed
         y_coord = y_coord + y_speed
 
-        #loop cronometro (ta meio bugado ainda)
+        #loop cronometro 
         if event.type == pygame.USEREVENT:
             cronometro -= 1
 
@@ -304,7 +301,7 @@ while not done:
     TELA.blit(background_image, background_position)
     TELA.blit(player_image, [x_coord, y_coord])
 
-    # CHAMA O MÉTODO QUE MOVIMENTA OS LIVROS-----------------------------------------------------------------
+    # CHAMA O MÉTODO QUE MOVIMENTA OS LIVROS------------------------------------------------------------
     if not pause:
         all_sprites_list.update()
 
@@ -318,9 +315,10 @@ while not done:
     pygame.font.init()
     txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoriaSQL()
     fonte = pygame.font.Font("Quicksand-Bold.ttf", 18)  
-    fontemat = pygame.font.Font("Quicksand-Bold.ttf", 25)                    # carrega com a fonte padrão
+    fontemat = pygame.font.Font("Quicksand-Bold.ttf", 25)                   
     player.atualizar_informacoes()
 
+    # acertou pergunta
     if resposta == alternativa and resposta != 0:
         acertos += 1
         resposta = 0
@@ -328,12 +326,14 @@ while not done:
         print(acertos)
         print("Player acertou.")
         
+    # errou pergunta
     if resposta is not None and resposta != alternativa and resposta != 0:
         resposta = 0
         vidas -= 1
         print(acertos)
         print("Player errou")
 
+    # muda skin
     if 7 > acertos >= 3:
         player.mudar_imagem('SpritePescador.png')
     elif 10 > acertos >= 6:
@@ -345,13 +345,14 @@ while not done:
     if vidas == -1:
         pygame.quit()
 
+    # regenera vida a cada 3 perguntas
     if cont_vida % 3 == 0 and cont_vida != 0 and vidas != 3:
         vidas += 1
         cont_vida = 0
         
 
     # CHECA COLISÕES----------------------------------------------------------------------
-    for block in sql_hit_list:
+    for livro in sql_hit_list:
         # ABRE PERGUNTA NA TELA
         txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoriaSQL()
         alternativa = resp
@@ -365,10 +366,10 @@ while not done:
         print("A resposta correta é: ", alternativa)
         tela_pergunta = True
         # RESETA PARA O INICIO DA TELA
-        block.reset_pos()
+        livro.reset_pos()
     all_sprites_list.draw(TELA)
 
-    for block in py_hit_list:
+    for livro in py_hit_list:
         # ABRE PERGUNTA NA TELA
         txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoriaPython()
         alternativa = resp
@@ -382,11 +383,11 @@ while not done:
         print("A resposta correta é: ", alternativa)
         tela_pergunta = True
         # RESETA PARA O INICIO DA TELA
-        block.reset_pos()
+        livro.reset_pos()
 
     all_sprites_list.draw(TELA)
 
-    for block in java_hit_list:
+    for livro in java_hit_list:
         # ABRE PERGUNTA NA TELA
         txt, alt1, alt2, alt3, alt4, resp, materia = perguntaAleatoriaJava()
         alternativa = resp
@@ -400,17 +401,16 @@ while not done:
         print("A resposta correta é: ", alternativa)
         tela_pergunta = True
         # RESETA PARA O INICIO DA TELA
-        block.reset_pos()
+        livro.reset_pos()
     all_sprites_list.draw(TELA)
 
-
-    for block in obst_hit_list:
-        # ABRE PERGUNTA NA TELA
+    for obstaculo in obst_hit_list:
         vidas -= 1
         # RESETA PARA O INICIO DA TELA
-        block.reset_pos()
+        obstaculo.reset_pos()
     all_sprites_list.draw(TELA)
 
+    # pergunta na tela
     if tela_pergunta:
         TELA.blit(question_surface, (80, 250))
         question_surface.blit(question_image, (0, 0))
