@@ -334,11 +334,11 @@ while not done:
         print("Player errou")
 
     # muda skin
-    if 7 > acertos >= 3:
+    if 6 > acertos >= 3:
         player.mudar_imagem('SpritePescador.png')
-    elif 10 > acertos >= 6:
+    elif 9 > acertos >= 6:
         player.mudar_imagem('SpriteFerreiro.png')
-    elif 13 > acertos >= 9:
+    elif 12 > acertos >= 9:
         player.mudar_imagem('SpriteCavaleiro.png')
     elif acertos >= 12:
         player.mudar_imagem('SpriteMago.png')
