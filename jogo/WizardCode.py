@@ -63,7 +63,9 @@ def abrir_tela_cadastro():
             c.execute("INSERT INTO cadastro VALUES (?, ?, ?)", (nome, email, senha))
             label_status.configure(text="Cadastro realizado com sucesso!", fg="green")
             fechar_janela_anterior()
-            os.system('WizardCode\WizardCodeJogo.py')
+            #abre o jogo
+            os.system(r"jogo\WizardCode\WizardCodeJogo.py")
+            
             
 
         conn.commit()
@@ -111,7 +113,9 @@ def abrir_tela_login():
         if c.fetchone():
             label_status.configure(text="Login bem-sucedido!", fg="green")
             fechar_janela_anterior()
-            os.system('WizardCode\WizardCodeJogo.py')
+            #abre o jogo
+            os.system(r"jogo\WizardCode\WizardCodeJogo.py")
+            
         else:
             label_status.configure(text="Email ou senha inválidos!", fg="red")
 
