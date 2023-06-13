@@ -64,7 +64,7 @@ def abrir_tela_cadastro():
             label_status.configure(text="Cadastro realizado com sucesso!", fg="green")
             fechar_janela_anterior()
             #abre o jogo
-            os.system(r"\jogo\WizardCode\WizardCodeJogo.py")
+            os.system(r"jogo\WizardCode\WizardCodeJogo.py")
             
             
 
