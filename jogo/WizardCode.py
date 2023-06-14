@@ -4,7 +4,7 @@ import os
 
 # variavéis globais
 conn = None
-janela = None
+janela = None   
 
 def fechar_janela_anterior():
     global janela
@@ -17,7 +17,7 @@ def criar_tabela():
     c = conn.cursor()
 
     c.execute('''CREATE TABLE IF NOT EXISTS cadastro
-                 (nome TEXT, email TEXT, senha TEXT)''')
+                (nome TEXT, email TEXT, senha TEXT)''')
 
     conn.commit()
 
@@ -63,9 +63,7 @@ def abrir_tela_cadastro():
             c.execute("INSERT INTO cadastro VALUES (?, ?, ?)", (nome, email, senha))
             label_status.configure(text="Cadastro realizado com sucesso!", fg="green")
             fechar_janela_anterior()
-            #abre o jogo
             os.system(r"jogo\WizardCode\WizardCodeJogo.py")
-            
             
 
         conn.commit()
@@ -110,12 +108,12 @@ def abrir_tela_login():
         c = conn.cursor()
 
         c.execute("SELECT * FROM cadastro WHERE email=? AND senha=?", (email, senha))
-        if c.fetchone():
+        res = c.fetchone()
+        if res:
             label_status.configure(text="Login bem-sucedido!", fg="green")
             fechar_janela_anterior()
-            #abre o jogo
+            email = res[1]
             os.system(r"jogo\WizardCode\WizardCodeJogo.py")
-            
         else:
             label_status.configure(text="Email ou senha inválidos!", fg="red")
 
@@ -158,6 +156,5 @@ botao_login = Button(janela, text="Login", font=("TIMES", 16), width=20, command
 
 botao_comojogar = Button(janela, text="Como jogar", font=("TIMES", 16), width=20, bg='antiqueWhite1', command=como_jogar).place(width=327.2, height=65.2, x=81.4, y=120)
 
-
-#incia a janela principal (janela)
+# incia a janela principal (janela)
 janela.mainloop()

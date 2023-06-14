@@ -1,0 +1,18 @@
+create database jogo;
+use jogo;
+
+select * from cadastro;CREATE DATABASE IF NOT EXISTS jogo;
+use jogo;
+
+CREATE TABLE IF NOT EXISTS cadastro(nome TEXT, email varchar(50), senha TEXT,
+primary key(email));
+
+INSERT INTO cadastro VALUES (?, ?, ?);
+
+CREATE TABLE IF NOT EXISTS Ranking(Nome varchar(30),
+Tempo_Total varchar(30),
+email varchar (50),
+FOREIGN KEY (email) REFERENCES cadastro (email) ON DELETE CASCADE ON UPDATE CASCADE);
+
+
+INSERT INTO Ranking(Tempo_Total, email) VALUES ("60", "23.01189-0@maua.br");
